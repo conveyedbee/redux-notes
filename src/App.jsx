@@ -1,17 +1,20 @@
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useQuery } from '@tanstack/react-query'
+import { getNotes } from './requests'
 
 import NoteForm from './components/NoteForm'
 import Notes from './components/Notes'
 import VisibilityFilter from './components/VisibilityFilter'
-import { initializeNotes } from './reducers/noteReducer'
 
 const App = () => {
-  const dispatch = useDispatch()
+  
+  const result = useQuery({
+    queryKey: ['notes'],
+    queryFn: getNotes
+  })
 
-  useEffect(() => {
-    dispatch(initializeNotes())
-  }, [dispatch])
+  if (result.isPending) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div>

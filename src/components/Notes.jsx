@@ -1,5 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleImportanceOf } from '../reducers/noteReducer'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { updateNote } from '../requests'
+
+const queryClient = useQueryClient()
+
+const updateNoteMutation = useMutation({
+    mutationFn: updateNote,
+    onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['notes'] })
+    }
+})
 
 const Note = ({ note, handleClick }) => {
     return (
